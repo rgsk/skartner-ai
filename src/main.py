@@ -5,4 +5,4 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World jenkins should update this"}
+    return {"message": "Hello World reverted"}
