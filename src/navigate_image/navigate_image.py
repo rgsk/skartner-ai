@@ -23,7 +23,7 @@ base64_img = encode_image(image_path)
 
 def navigate_image(user_query: str):
     GPT_MODEL = "gpt-4-turbo-2024-04-09"
-    set_jsondata_key('formImagePositions', sample_form_image_positions)
+    # set_jsondata_key('formImagePositions', sample_form_image_positions)
     positions = get_jsondata_key('formImagePositions') or []
     # print(positions)
     response = openai_client.chat.completions.create(
