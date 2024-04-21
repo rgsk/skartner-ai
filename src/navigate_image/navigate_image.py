@@ -3,8 +3,10 @@ import base64
 import json
 import os
 
-from src.navigate_image.form_image_positions import positions
+from src.navigate_image.sample_form_image_positions import \
+    sample_form_image_positions
 from src.openai_client import openai_client
+from src.skartner_server import get_jsondata_key, set_jsondata_key
 
 
 def encode_image(image_path: str):
@@ -21,6 +23,8 @@ base64_img = encode_image(image_path)
 
 def navigate_image(user_query: str):
     GPT_MODEL = "gpt-4-turbo-2024-04-09"
+    # set_jsondata_key('formImagePositions', sample_form_image_positions)
+    positions = get_jsondata_key('formImagePositions') or []
     response = openai_client.chat.completions.create(
         model=GPT_MODEL,
         messages=[

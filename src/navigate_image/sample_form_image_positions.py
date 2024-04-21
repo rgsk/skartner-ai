@@ -1,4 +1,4 @@
-positions = [
+sample_form_image_positions = [
     {
         "text": "Login",
         "position": {
