@@ -28,10 +28,11 @@ def navigate_image(user_query: str):
     # print(positions)
     response = openai_client.chat.completions.create(
         model=GPT_MODEL,
+        response_format={"type": "json_object"},
         messages=[
             {
                 "role": "system",
-                "content": f"from the user query try to understand which button or text user wants to locate in the image, you have to return it's location, output in terms of top and left offset, for eg. for something in center output should be top:50%,left:50%. Only output the top and left offset as an array of two numbers eg. [12, 14], nothing else, refer these labels to get the idea for how to locate elements in this image - ${json.dumps(positions)}"
+                "content": f"from the user query try to understand which button or text user wants to locate in the image, you have to return it's location, output in terms of top and left offset as a json object, for eg. for something in center output should be top:50%,left:50%, if you can't determine which button/text/icon user wants to locate, output top:-1%,left:-1%. refer these labels to get the idea for how to locate elements in this image - ${json.dumps(positions)}"
             },
             {
                 "role": "user",
@@ -51,5 +52,7 @@ def navigate_image(user_query: str):
 
         ],
     )
-
-    return response.choices[0].message.content
+    content = response.choices[0].message.content
+    if content is None:
+        return None
+    return json.loads(content)
