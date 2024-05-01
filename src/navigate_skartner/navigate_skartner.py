@@ -22,7 +22,10 @@ def chat_completion_request(messages, tools=None, tool_choice=None, model=GPT_MO
 
 
 messages = []
-messages.append({"role": "system", "content": "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous."})
+system_message = {
+    "role": "system",
+    "content": "Don't make assumptions about what values to plug into functions. Ask for clarification if a user request is ambiguous."
+}
 
 
 def use_assistant_message(messages, assistant_message):
@@ -43,10 +46,13 @@ def pop_arguments_key(messages):
 
 
 def navigate_skartner(user_message: str):
+    global messages
     messages.append({"role": "user", "content": user_message})
+    # print(len(messages))
     chat_response = chat_completion_request(
-        pop_arguments_key(messages), tools=tools
+        pop_arguments_key([system_message] + messages), tools=tools
     )
     assistant_message = chat_response.choices[0].message
     use_assistant_message(messages, assistant_message)
+    messages = messages[-4:]
     return assistant_message
