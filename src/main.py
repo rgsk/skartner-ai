@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
+from src.chat_assistant.chat_assistant import chat_assistant
 from src.navigate_image.navigate_image import navigate_image
 from src.navigate_skartner.navigate_skartner import navigate_skartner
 from src.transcribe_handwritten_text import transcribe_handwritten_text
@@ -40,4 +41,10 @@ async def navigate(user_query: str):
 @app.get("/navigate_skartner")
 async def nav_sk(user_message: str):
     assistant_message = navigate_skartner(user_message)
+    return {'assistant_message': assistant_message}
+
+
+@app.get('/chat')
+async def chat_endpoint(session_id: str, user_message: str):
+    assistant_message = chat_assistant(session_id, user_message)
     return {'assistant_message': assistant_message}
