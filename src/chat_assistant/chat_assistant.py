@@ -43,3 +43,15 @@ chain_with_history = RunnableWithMessageHistory(
 
 def chat_assistant(session_id: str, user_message: str):
     return chain_with_history.invoke({"question": user_message}, config={"configurable": {"session_id": session_id}})
+
+
+def get_chat_history_messages(session_id: str):
+
+    assert MONGODB_URL is not None
+    history = MongoDBChatMessageHistory(
+        session_id=session_id,
+        connection_string=MONGODB_URL,
+        database_name=DATABASE_NAME,
+        collection_name=COLLECTION_NAME,
+    )
+    return history.messages

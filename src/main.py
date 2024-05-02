@@ -4,7 +4,8 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.chat_assistant.chat_assistant import chat_assistant
+from src.chat_assistant.chat_assistant import (chat_assistant,
+                                               get_chat_history_messages)
 from src.navigate_image.navigate_image import navigate_image
 from src.navigate_skartner.navigate_skartner import navigate_skartner
 from src.transcribe_handwritten_text import transcribe_handwritten_text
@@ -48,3 +49,9 @@ async def nav_sk(user_message: str):
 async def chat_endpoint(session_id: str, user_message: str):
     assistant_message = chat_assistant(session_id, user_message)
     return {'assistant_message': assistant_message}
+
+
+@app.get('/chat_history')
+async def chat_history_endpoint(session_id: str):
+    messages = get_chat_history_messages(session_id)
+    return {'messages': messages}
