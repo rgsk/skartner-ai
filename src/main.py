@@ -47,7 +47,9 @@ async def nav_sk(user_message: str):
 
 @app.get('/chat')
 async def chat_endpoint(session_id: str, user_message: str):
+    print(f'chat_assistant invoked {user_message=}')
     assistant_message = chat_assistant(session_id, user_message)
+    print(f'chat_assistant outputted {assistant_message=}')
     return {'assistant_message': assistant_message}
 
 

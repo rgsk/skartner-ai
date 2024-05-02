@@ -15,7 +15,7 @@ llm = ChatBedrock(
 
 prompt = ChatPromptTemplate.from_messages(
     [
-        ("system", "You are a helpful assistant."),
+        ("system", "You are a helpful assistant. Try to keep your answers very short, consise and to the point."),
         MessagesPlaceholder(variable_name="history"),
         ("human", "{question}"),
     ]
