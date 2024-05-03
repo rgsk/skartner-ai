@@ -1,6 +1,7 @@
 from typing import Any, List
 
 from langchain_core.pydantic_v1 import BaseModel, Field
+from langchain_core.tools import BaseTool, StructuredTool
 
 
 class searchWord(BaseModel):
@@ -49,19 +50,38 @@ how_to_locate_prompt_from_list = """
 """
 
 
-class editPrompt(BaseModel):
-    f"""start editing a prompt from a list of prompts,
-    f{how_to_locate_prompt_from_list}
-    """
+def func():
+    pass
+
+
+class editPromptInput(BaseModel):
     promptId: str = Field(description="the prompt id we want to edit")
 
 
-class selectPromptAsDefault(BaseModel):
-    f"""select one of the prompts from a list of prompts as default,
-    f{how_to_locate_prompt_from_list}
-    """
+editPrompt = StructuredTool.from_function(
+    func=func,
+    name="editPrompt",
+    description=f"""start editing a prompt from a list of prompts,
+    {how_to_locate_prompt_from_list}
+    """,
+    args_schema=editPromptInput
+)
+
+
+class selectPromptAsDefaultInput(BaseModel):
     promptId: str = Field(
         description="the prompt id we want to set as default")
+
+
+selectPromptAsDefault = StructuredTool.from_function(
+    func=func,
+    name="selectPromptAsDefault",
+    description=f"""select one of the prompts from a list of prompts as default,
+    {how_to_locate_prompt_from_list}
+    """,
+    args_schema=selectPromptAsDefaultInput
+
+)
 
 
 tools: List[Any] = [searchWord, saveWord, goToManagePrompts, addNewPrompt,
