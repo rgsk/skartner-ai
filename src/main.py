@@ -1,9 +1,12 @@
 import base64
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 
+from src.answer_evaluator.children.gre_analyze_an_issue_task import \
+    gre_analyze_an_issue_task
 from src.chat_assistant.chat_assistant import (chat_assistant,
                                                get_chat_history_messages)
 from src.navigate_image.navigate_image import navigate_image
@@ -57,3 +60,21 @@ async def chat_endpoint(session_id: str, user_message: str):
 async def chat_history_endpoint(session_id: str):
     messages = get_chat_history_messages(session_id)
     return {'messages': messages}
+
+
+class TaskRequest(BaseModel):
+    type: str
+    args: dict
+
+
+@app.post("/answer_evaluator")
+async def answer_evaluator(task_request: TaskRequest):
+    if task_request.type == 'gre_analyze_an_issue_task':
+        task = task_request.args.get('task')
+        attempt = task_request.args.get('attempt')
+        if task is None or attempt is None or not task or not attempt:
+            raise HTTPException(
+                status_code=400, detail="tasks and attempt should be non-empty")
+        return gre_analyze_an_issue_task(task, attempt)
+    else:
+        raise HTTPException(status_code=400, detail="Invalid task type")
