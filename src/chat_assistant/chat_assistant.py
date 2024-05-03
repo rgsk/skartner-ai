@@ -1,17 +1,15 @@
 import os
 
 from dotenv import load_dotenv
-from langchain_aws import ChatBedrock
+from langchain_anthropic import ChatAnthropic
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_mongodb.chat_message_histories import MongoDBChatMessageHistory
 
 load_dotenv()
-llm = ChatBedrock(
-    model_id="mistral.mistral-large-2402-v1:0",
-    client=None,
-)
+
+llm = ChatAnthropic(model="claude-3-sonnet-20240229")  # type: ignore
 
 prompt = ChatPromptTemplate.from_messages(
     [
