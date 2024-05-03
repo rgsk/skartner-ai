@@ -1,7 +1,5 @@
-from typing import Any, List
-
 from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_core.tools import BaseTool, StructuredTool
+from langchain_core.tools import StructuredTool
 
 
 class searchWord(BaseModel):
@@ -80,9 +78,28 @@ selectPromptAsDefault = StructuredTool.from_function(
     {how_to_locate_prompt_from_list}
     """,
     args_schema=selectPromptAsDefaultInput
-
 )
 
 
-tools: List[Any] = [searchWord, saveWord, goToManagePrompts, addNewPrompt,
-                    saveThePrompt, typeWithKeyboard, editPrompt, selectPromptAsDefault]
+class goToWordOrSearchTab(BaseModel):
+    """when user says go to word tab or search tab"""
+
+
+class goToDictionaryOrHistoryTab(BaseModel):
+    """when user says go to dictionary tab or history tab"""
+
+
+class deleteWord(BaseModel):
+    """delete the word"""
+
+
+class swipeLeft(BaseModel):
+    """swipe left or go to next page or go to next word or go right"""
+
+
+class swipeRight(BaseModel):
+    """swipe right or go to previous page or go to previous word or go left"""
+
+
+tools = [searchWord, saveWord, goToManagePrompts, addNewPrompt, saveThePrompt, typeWithKeyboard, editPrompt,
+         selectPromptAsDefault, goToWordOrSearchTab, goToDictionaryOrHistoryTab, deleteWord, swipeLeft, swipeRight]
