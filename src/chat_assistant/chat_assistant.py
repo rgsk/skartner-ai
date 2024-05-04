@@ -6,10 +6,11 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_mongodb.chat_message_histories import MongoDBChatMessageHistory
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
-
-llm = ChatAnthropic(model="claude-3-sonnet-20240229")  # type: ignore
+llm = ChatOpenAI(model="gpt-3.5-turbo")
+# llm = ChatAnthropic(model="claude-3-sonnet-20240229")  # type: ignore
 
 prompt = ChatPromptTemplate.from_messages(
     [
