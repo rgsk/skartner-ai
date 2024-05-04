@@ -1,3 +1,5 @@
+from typing import Any, List
+
 from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_core.tools import StructuredTool
 
@@ -101,5 +103,5 @@ class swipeRight(BaseModel):
     """swipe right or go to previous page or go to previous word or go left"""
 
 
-tools = [searchWord, saveWord, goToManagePrompts, addNewPrompt, saveThePrompt, typeWithKeyboard, editPrompt,
-         selectPromptAsDefault, goToWordOrSearchTab, goToDictionaryOrHistoryTab, deleteWord, swipeLeft, swipeRight]
+tools: List[Any] = [searchWord, saveWord, goToManagePrompts, addNewPrompt, saveThePrompt, typeWithKeyboard, editPrompt,
+                    selectPromptAsDefault, goToWordOrSearchTab, goToDictionaryOrHistoryTab, deleteWord, swipeLeft, swipeRight]
