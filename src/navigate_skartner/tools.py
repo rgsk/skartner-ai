@@ -154,9 +154,34 @@ class setStatus(BaseModel):
     value: StatusEnum = Field(..., description="The new status to be set")
 
 
+class TagType(str, Enum):
+    page = "page"
+    word = "word"
+    all = "all"
+
+
+tag_type_description = "if it is specifically mentioned that do this action for page or word, then tag_type should be that value, otherwise all"
+
+
+class addTag(BaseModel):
+    """add tag or select tag"""
+    tag_name: str = Field(
+        description="the tag name to add or select")
+    tag_type: TagType = Field(
+        description=tag_type_description)
+
+
+class removeTag(BaseModel):
+    """remove tag or unselect tag"""
+    tag_name: str = Field(
+        description="the tag name to remove or unselect")
+    tag_type: TagType = Field(
+        description=tag_type_description)
+
+
 tools: List[Any] = [
     searchWord, saveWord, goToManagePrompts, addNewPrompt, saveThePrompt, typeWithKeyboard, editPrompt,
     selectPromptAsDefault, goToWordOrSearchTab, goToDictionaryOrHistoryTab, deleteWord, swipeLeft,
     swipeRight, clearFilters, goToStatusPage, goToTagsPage, goBack, goToPage, goToFirstPage, goToLastPage,
-    filterByWordOrCharacters, setStatus
+    filterByWordOrCharacters, setStatus, addTag, removeTag
 ]
