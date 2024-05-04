@@ -103,5 +103,45 @@ class swipeRight(BaseModel):
     """swipe right or go to previous page or go to previous word or go left"""
 
 
-tools: List[Any] = [searchWord, saveWord, goToManagePrompts, addNewPrompt, saveThePrompt, typeWithKeyboard, editPrompt,
-                    selectPromptAsDefault, goToWordOrSearchTab, goToDictionaryOrHistoryTab, deleteWord, swipeLeft, swipeRight]
+class clearFilters(BaseModel):
+    """clear all the filters or reset filters"""
+
+
+class goToStatusPage(BaseModel):
+    """go to status page or change status filters"""
+
+
+class goToTagsPage(BaseModel):
+    """go to tags page or change tags filters"""
+
+
+class goBack(BaseModel):
+    """go back or click back or go to previous page"""
+
+
+class goToPage(BaseModel):
+    """switch to a certain page number or switch to word number _, because one word is displayed per page"""
+    page: int = Field(description="the page number that user wants to go to")
+
+
+class goToFirstPage(BaseModel):
+    """go to first page or go to first word"""
+
+
+class goToLastPage(BaseModel):
+    """go to last page or go to last word"""
+
+
+class filterByWordOrCharacters(BaseModel):
+    """user could say like filter for the words starting with s t, in this case 'st' would be filter_value,
+    """
+    filter_value: str = Field(
+        description="the word or a sequence of few characters")
+
+
+tools: List[Any] = [
+    searchWord, saveWord, goToManagePrompts, addNewPrompt, saveThePrompt, typeWithKeyboard, editPrompt,
+    selectPromptAsDefault, goToWordOrSearchTab, goToDictionaryOrHistoryTab, deleteWord, swipeLeft,
+    swipeRight, clearFilters, goToStatusPage, goToTagsPage, goBack, goToPage, goToFirstPage, goToLastPage,
+    filterByWordOrCharacters
+]
