@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Any, List
 
 from langchain_core.pydantic_v1 import BaseModel, Field
@@ -139,9 +140,23 @@ class filterByWordOrCharacters(BaseModel):
         description="the word or a sequence of few characters")
 
 
+class StatusEnum(str, Enum):
+    ALMOST_LEARNT = "ALMOST_LEARNT"
+    FINISHED_LEARNING = "FINISHED_LEARNING"
+    MASTERED = "MASTERED"
+    MEMORY_MODE = "MEMORY_MODE"
+    STARTED_LEARNING = "STARTED_LEARNING"
+    STILL_LEARNING = "STILL_LEARNING"
+
+
+class setStatus(BaseModel):
+    """Update/set/change status to a new value"""
+    value: StatusEnum = Field(..., description="The new status to be set")
+
+
 tools: List[Any] = [
     searchWord, saveWord, goToManagePrompts, addNewPrompt, saveThePrompt, typeWithKeyboard, editPrompt,
     selectPromptAsDefault, goToWordOrSearchTab, goToDictionaryOrHistoryTab, deleteWord, swipeLeft,
     swipeRight, clearFilters, goToStatusPage, goToTagsPage, goBack, goToPage, goToFirstPage, goToLastPage,
-    filterByWordOrCharacters
+    filterByWordOrCharacters, setStatus
 ]
