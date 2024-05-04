@@ -5,8 +5,8 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from src.answer_evaluator.children.gre_analyze_an_issue_task import \
-    gre_analyze_an_issue_task
+from src.answer_evaluator.children.gre_analyze_an_issue_task import (
+    gre_analyze_an_issue_task_evaluate, gre_analyze_an_issue_task_generate)
 from src.chat_assistant.chat_assistant import (chat_assistant,
                                                get_chat_history_messages)
 from src.navigate_image.navigate_image import navigate_image
@@ -75,9 +75,22 @@ async def answer_evaluator(task_request: TaskRequest):
     if task_request.type == 'gre_analyze_an_issue_task':
         task = task_request.args.get('task')
         attempt = task_request.args.get('attempt')
-        if task is None or attempt is None or not task or not attempt:
+        if task is None or attempt is None or task == '' or attempt == '':
             raise HTTPException(
                 status_code=400, detail="tasks and attempt should be non-empty")
-        return gre_analyze_an_issue_task(task, attempt)
+        return gre_analyze_an_issue_task_evaluate(task, attempt)
+    else:
+        raise HTTPException(status_code=400, detail="Invalid task type")
+
+
+@app.post("/answer_generator")
+async def answer_generator(task_request: TaskRequest):
+    if task_request.type == 'gre_analyze_an_issue_task':
+        task = task_request.args.get('task')
+        score = task_request.args.get('score')
+        if task is None or score is None or task == '':
+            raise HTTPException(
+                status_code=400, detail="tasks and score should be non-empty")
+        return gre_analyze_an_issue_task_generate(task, score)
     else:
         raise HTTPException(status_code=400, detail="Invalid task type")
