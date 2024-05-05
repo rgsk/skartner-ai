@@ -66,3 +66,23 @@ async def list_messages():
     messages = await messages_collection.find().to_list(1000)
     parsed_messages = [MessageModel.model_validate(msg) for msg in messages]
     return MessageCollection(messages=parsed_messages)
+
+
+@router.get(
+    "/sessions",
+    response_description="List sessions with by prefix",
+    response_model=List[str],
+    response_model_by_alias=False,
+)
+async def list_sessions(prefix: str):
+    """
+    List sessions with by prefix
+    """
+    query = {}  # Initialize an empty query
+    if prefix:
+        # If prefix is provided, construct a query to filter by SessionId
+        # Filter by SessionId starting with the prefix
+        query['SessionId'] = {"$regex": f"^{prefix}"}
+
+    unique_session_ids = await messages_collection.distinct("SessionId", query)
+    return unique_session_ids
