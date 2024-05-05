@@ -3,10 +3,9 @@ import base64
 import json
 import os
 
-from src.navigate_image.sample_form_image_positions import \
-    sample_form_image_positions
-from src.openai_client import openai_client
-from src.skartner_server import get_jsondata_key, set_jsondata_key
+from ..openai_client import openai_client
+from ..skartner_server import get_jsondata_key, set_jsondata_key
+from .sample_form_image_positions import sample_form_image_positions
 
 
 def encode_image(image_path: str):

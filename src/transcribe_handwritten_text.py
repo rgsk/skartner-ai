@@ -1,4 +1,4 @@
-from src.openai_client import openai_client
+from .openai_client import openai_client
 
 
 def transcribe_handwritten_text(base64_img: str):

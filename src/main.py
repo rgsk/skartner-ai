@@ -5,18 +5,26 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from src.answer_evaluator.children.gre_analyze_an_issue_task import (
+from .answer_evaluator.children.gre_analyze_an_issue_task import (
     gre_analyze_an_issue_task_evaluate, gre_analyze_an_issue_task_generate)
-from src.chat_assistant.chat_assistant import (chat_assistant,
-                                               get_chat_history_messages)
-from src.navigate_image.navigate_image import navigate_image
-from src.navigate_skartner.navigate_skartner import navigate_skartner
-from src.transcribe_handwritten_text import transcribe_handwritten_text
+from .chat_assistant.chat_assistant import (chat_assistant,
+                                            get_chat_history_messages)
+from .crud.students import router as students_router
+from .navigate_image.navigate_image import navigate_image
+from .navigate_skartner.navigate_skartner import navigate_skartner
+from .transcribe_handwritten_text import transcribe_handwritten_text
 
 load_dotenv()
 
-app = FastAPI()
+app = FastAPI(
+    title="Student Course API",
+    summary="A sample application showing how to use FastAPI to add a ReST API to a MongoDB collection.",
+)
+
+app.include_router(students_router)
+
 origins = ["*"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
