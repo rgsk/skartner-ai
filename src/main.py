@@ -12,6 +12,7 @@ from .chat_assistant.chat_assistant import (chat_assistant,
 from .crud.students import router as students_router
 from .navigate_image.navigate_image import navigate_image
 from .navigate_skartner.navigate_skartner import navigate_skartner
+from .routers.messages import router as messages_router
 from .transcribe_handwritten_text import transcribe_handwritten_text
 
 load_dotenv()
@@ -22,6 +23,7 @@ app = FastAPI(
 )
 
 app.include_router(students_router)
+app.include_router(messages_router)
 
 origins = ["*"]
 

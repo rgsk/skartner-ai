@@ -3,7 +3,7 @@ from typing import List, Optional
 
 import motor.motor_asyncio
 from bson import ObjectId
-from fastapi import APIRouter, Body, FastAPI, HTTPException, status
+from fastapi import APIRouter, Body, HTTPException, status
 from fastapi.responses import Response
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 from pydantic.functional_validators import BeforeValidator
