@@ -1,4 +1,5 @@
 import base64
+from typing import List
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, File, HTTPException, UploadFile
@@ -61,10 +62,20 @@ async def nav_sk(user_message: str):
     return {'assistant_message': assistant_message}
 
 
-@app.get('/chat')
-async def chat_endpoint(session_id: str, user_message: str):
+class ChatRequestBody(BaseModel):
+    session_id: str
+    user_message: str
+    files_attached_urls: List[str]
+
+
+@app.post('/chat')
+async def chat_endpoint_post(body: ChatRequestBody):
+    user_message = body.user_message
+    session_id = body.session_id
+    files_attached_urls = body.files_attached_urls
     print(f'chat_assistant invoked {user_message=}')
-    assistant_message = chat_assistant(session_id, user_message)
+    assistant_message = chat_assistant(
+        session_id, user_message, files_attached_urls)
     print(f'chat_assistant outputted {assistant_message=}')
     return {'assistant_message': assistant_message}
 
