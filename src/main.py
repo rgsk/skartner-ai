@@ -6,6 +6,8 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from src.merge_text.merge_text import merge_text
+
 from .answer_evaluator.children.gre_analyze_an_issue_task import (
     gre_analyze_an_issue_task_evaluate, gre_analyze_an_issue_task_generate)
 from .chat_assistant.chat_assistant import (chat_assistant,
@@ -115,3 +117,13 @@ async def answer_generator(task_request: TaskRequest):
         return gre_analyze_an_issue_task_generate(task, score)
     else:
         raise HTTPException(status_code=400, detail="Invalid task type")
+
+
+class MergeTextRequest(BaseModel):
+    first: str
+    second: str
+
+
+@app.post('/merge_text')
+async def merge_text_endpoint(req: MergeTextRequest):
+    return merge_text(req.first, req.second)
