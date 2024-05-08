@@ -13,8 +13,8 @@ def merge_text(first: str, second: str):
         second_string: {second}
 
         your job is to merge them into single string,
-        the first initial words which you have to take from first string,
-        and the rest from the second string,
+        the first sentence of first_string is more correct and complete,
+        for rest of the output second_string is better,
         only output the result of their merge, it should not be like "Final String: ....", just the final string.
     """
     return chain.invoke(message)
