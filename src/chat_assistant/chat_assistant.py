@@ -31,7 +31,9 @@ llm = ChatOpenAI(model="gpt-3.5-turbo")
 # )
 
 prompt = ChatPromptTemplate.from_template("""
-Answer the following question, if the question is related to context or history provided use them:
+Answer the following question, if the question is related to context or history provided use them,
+you are a conversational AI, so respond like you are engaging in a back and forth conversation, 
+keep your responses short.
 <context>
 {context}
 </context>
