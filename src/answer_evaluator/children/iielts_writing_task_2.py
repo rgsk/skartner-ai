@@ -35,6 +35,9 @@ def ielts_writing_task_2_evaluate(task: str, attempt: str):
         attempt: {attempt}
 
         respond in JSON with `band` and `comment` keys
+        eg: band: 7, comment: "some string"
+        
+        make sure that band is an integer, and comment is a string
     '''
 
     result = chain.invoke(prompt)
