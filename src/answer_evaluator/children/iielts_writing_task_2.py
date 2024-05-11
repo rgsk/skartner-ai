@@ -2,6 +2,7 @@
 import json
 
 from langchain_core.output_parsers import StrOutputParser
+from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_openai import ChatOpenAI
 
 from src.utils import read_file
@@ -9,22 +10,32 @@ from src.utils import read_file
 ielts_writing_task_2_scoring_guide = read_file(
     'src/data/ielts_writing_task_2_scoring_guide.txt'
 )
-llm = ChatOpenAI()
 
-chain = llm | StrOutputParser()
+
+class Response(BaseModel):
+    band: int = Field(
+        description="numeric band for attempt based on scoring_guide")
+    comment: str = Field(
+        description="comment considering points in scoring_guide")
+
+
+llm = ChatOpenAI()
+structured_llm = llm.with_structured_output(Response, method="json_mode")
+chain = structured_llm
 
 
 def ielts_writing_task_2_evaluate(task: str, attempt: str):
     prompt = f'''
+        you have to evaluate ielts writing task 2, based on following scoring_guide.
+
         scoring_guide: {ielts_writing_task_2_scoring_guide}
 
         based on above infomation give a band and comment for below task attempt.
         task: {task}
         attempt: {attempt}
 
-        your output should be in json only, eg. band:5,comment:"some string"
+        respond in JSON with `band` and `comment` keys
     '''
 
     result = chain.invoke(prompt)
-    json_value = json.loads(result)
-    return json_value
+    return result
