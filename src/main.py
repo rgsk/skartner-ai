@@ -8,6 +8,8 @@ from pydantic import BaseModel
 
 from src.answer_evaluator.children.ielts_academic_writing_task_1 import \
     ielts_academic_writing_task_1
+from src.answer_evaluator.children.ielts_general_writing_task_1 import \
+    ielts_general_writing_task_1
 from src.answer_evaluator.children.iielts_writing_task_2 import \
     ielts_writing_task_2_evaluate
 from src.merge_text.merge_text import merge_text
@@ -121,6 +123,13 @@ async def answer_evaluator(task_request: TaskRequest):
             raise HTTPException(
                 status_code=400, detail="tasks, image_url and attempt should be non-empty")
         return ielts_academic_writing_task_1(task, image_url, attempt)
+    elif task_request.type == 'ielts_general_writing_task_1':
+        task = task_request.args.get('task')
+        attempt = task_request.args.get('attempt')
+        if task is None or attempt is None or task == '' or attempt == '':
+            raise HTTPException(
+                status_code=400, detail="tasks and attempt should be non-empty")
+        return ielts_general_writing_task_1(task, attempt)
     else:
         raise HTTPException(status_code=400, detail="Invalid task type")
 
