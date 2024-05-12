@@ -155,3 +155,4 @@ class MergeTextRequest(BaseModel):
 @app.post('/merge_text')
 async def merge_text_endpoint(req: MergeTextRequest):
     return merge_text(req.first, req.second)
+#
