@@ -6,6 +6,8 @@ from fastapi import FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from src.answer_evaluator.children.ielts_academic_writing_task_1 import \
+    ielts_academic_writing_task_1
 from src.answer_evaluator.children.iielts_writing_task_2 import \
     ielts_writing_task_2_evaluate
 from src.merge_text.merge_text import merge_text
@@ -111,6 +113,14 @@ async def answer_evaluator(task_request: TaskRequest):
             raise HTTPException(
                 status_code=400, detail="tasks and attempt should be non-empty")
         return ielts_writing_task_2_evaluate(task, attempt)
+    elif task_request.type == 'ielts_academic_writing_task_1':
+        task = task_request.args.get('task')
+        image_url = task_request.args.get('image_url')
+        attempt = task_request.args.get('attempt')
+        if task is None or image_url is None or attempt is None or task == '' or image_url == '' or attempt == '':
+            raise HTTPException(
+                status_code=400, detail="tasks, image_url and attempt should be non-empty")
+        return ielts_academic_writing_task_1(task, image_url, attempt)
     else:
         raise HTTPException(status_code=400, detail="Invalid task type")
 
