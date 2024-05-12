@@ -26,19 +26,18 @@ chain = structured_llm
 
 def ielts_writing_task_2_evaluate(task: str, attempt: str):
     prompt = f'''
-        you have to evaluate ielts writing task 2, based on following scoring_guide.
+        you have to evaluate ielts writing task 2, based on following scoring_guide and task instructions.
 
-        scoring_guide: {ielts_writing_task_2_scoring_guide}
+        scoring_guide: <scoring_guide>{ielts_writing_task_2_scoring_guide}</scoring_guide>
 
         based on above infomation give a band and comment for below task attempt.
-        task: {task}
-        attempt: {attempt}
+        task: <task>{task}</task>
+        attempt: <attempt>{attempt}</attempt>
 
         respond in JSON with `band` and `comment` keys
         eg: band: 7, comment: "some string"
         
         make sure that band is an integer, and comment is a string
     '''
-
     result = chain.invoke(prompt)
     return result
